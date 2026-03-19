@@ -1,0 +1,2369 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>!@#$%^**&*#$*(-标题)</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      }
+
+      body {
+        background-color: #1a1a2e;
+        color: #f0f0f0;
+        line-height: 1.6;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 95vh;
+      }
+
+      header {
+        text-align: center;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #0f3460;
+      }
+
+      header h1 {
+        font-size: 2.8rem;
+        color: #4cc9f0;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      header p {
+        font-size: 1.2rem;
+        color: #a9b7c6;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .app-container {
+        display: flex;
+        flex: 1;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+
+      .book-list {
+        flex: 1;
+        min-width: 300px;
+        background-color: #162447;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .player-section {
+        flex: 2;
+        min-width: 400px;
+        background-color: #162447;
+        border-radius: 15px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        color: #4cc9f0;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #0f3460;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-title i {
+        font-size: 1.5rem;
+      }
+
+      .book-item {
+        background-color: #1f4068;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-left: 4px solid #4cc9f0;
+      }
+
+      .book-item:hover {
+        background-color: #2a5a8a;
+        transform: translateX(5px);
+      }
+
+      .book-item.active {
+        background-color: #2a5a8a;
+        box-shadow: 0 5px 15px rgba(76, 201, 240, 0.2);
+      }
+
+      .book-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #e6e6e6;
+      }
+
+      .book-author {
+        color: #a9b7c6;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        line-height: 1.4;
+      }
+
+      .book-author div {
+        margin-bottom: 2px;
+      }
+
+      .book-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: #8a9ba8;
+        margin-top: 5px;
+      }
+
+      .chapter-list-container {
+        margin-top: 10px;
+        padding-left: 10px;
+        border-left: 2px solid #0f3460;
+      }
+
+      .chapter-pagination {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+
+      .page-btn {
+        background-color: #0f3460;
+        color: #a9b7c6;
+        border: none;
+        border-radius: 5px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+      }
+
+      .page-btn:hover {
+        background-color: #1a4a80;
+      }
+
+      .page-btn.active {
+        background-color: #4cc9f0;
+        color: #162447;
+        font-weight: 600;
+      }
+
+      .chapter-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+
+      .chapter-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .chapter-list::-webkit-scrollbar-track {
+        background: #0f3460;
+        border-radius: 3px;
+      }
+
+      .chapter-list::-webkit-scrollbar-thumb {
+        background: #4cc9f0;
+        border-radius: 3px;
+      }
+
+      .chapter-item {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        background-color: #0f3460;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .chapter-item:hover {
+        background-color: #1a4a80;
+      }
+
+      .chapter-item.active {
+        background-color: #4cc9f0;
+        color: #162447;
+        font-weight: 600;
+      }
+
+      .chapter-item.played {
+        color: #4cc9f0;
+      }
+
+      .player-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+      }
+
+      .book-cover {
+        width: 220px;
+        height: 300px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .current-chapter-info {
+        text-align: center;
+        margin-bottom: 30px;
+        width: 100%;
+      }
+
+      .current-chapter-title {
+        font-size: 1.8rem;
+        color: #4cc9f0;
+        margin-bottom: 10px;
+      }
+
+      .current-book-title {
+        font-size: 1.2rem;
+        color: #a9b7c6;
+        margin-bottom: 15px;
+      }
+
+      .audio-player {
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .progress-container {
+        background-color: #0f3460;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 25px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .progress-bar {
+        background-color: #4cc9f0;
+        height: 100%;
+        border-radius: 4px;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      .time-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        color: #a9b7c6;
+        font-size: 0.95rem;
+      }
+
+      .player-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 30px;
+      }
+
+      .control-btn {
+        background-color: #1f6840;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        color: #f0f0f0;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .control-btn:hover {
+        background-color: #2a5a8a;
+        transform: scale(1.05);
+      }
+
+      .control-btn.play-pause {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+        background-color: #4cc9f0;
+        color: #162447;
+      }
+
+      .control-btn.play-pause:hover {
+        background-color: #3ab0d6;
+      }
+
+      .playback-rate {
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #a9b7c6;
+      }
+
+      .playback-rate select {
+        background-color: #1f4068;
+        color: #f0f0f0;
+        border: 1px solid #0f3460;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      .progress-indicator {
+        position: absolute;
+        top: -5px;
+        width: 18px;
+        height: 18px;
+        background-color: #4cc9f0;
+        border-radius: 50%;
+        transform: translateX(-9px);
+        box-shadow: 0 0 10px rgba(76, 201, 240, 0.8);
+        display: none;
+      }
+
+      .resume-info {
+        background-color: #0f3460;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+        text-align: center;
+        border-left: 4px solid #4cc9f0;
+      }
+
+      .resume-info h3 {
+        color: #4cc9f0;
+        margin-bottom: 8px;
+      }
+
+      .resume-info p {
+        color: #a9b7c6;
+        font-size: 0.95rem;
+      }
+
+      .volume-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+        color: #a9b7c6;
+      }
+
+      .volume-slider {
+        width: 100px;
+        height: 6px;
+        background-color: #0f3460;
+        border-radius: 3px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .volume-level {
+        height: 100%;
+        background-color: #4cc9f0;
+        border-radius: 3px;
+        width: 80%;
+      }
+
+      .search-box {
+        margin-bottom: 15px;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 10px 15px;
+        background-color: #0f3460;
+        border: 1px solid #1a4a80;
+        border-radius: 8px;
+        color: #f0f0f0;
+        font-size: 1rem;
+      }
+
+      .search-input::placeholder {
+        color: #8a9ba8;
+      }
+
+      footer {
+        text-align: center;
+        padding: 25px 0;
+        margin-top: 30px;
+        border-top: 1px solid #0f3460;
+        color: #a9b7c6;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .app-container {
+          flex-direction: column;
+        }
+
+        .book-list,
+        .player-section {
+          min-width: 100%;
+        }
+
+        header h1 {
+          font-size: 2.2rem;
+        }
+
+        .chapter-pagination {
+          justify-content: center;
+        }
+
+        .page-btn {
+          padding: 5px 8px;
+          font-size: 0.8rem;
+        }
+
+        .chapter-list {
+          max-height: 300px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .player-controls {
+          gap: 15px;
+        }
+
+        .control-btn {
+          width: 50px;
+          height: 50px;
+          font-size: 1.2rem;
+        }
+
+        .control-btn.play-pause {
+          width: 60px;
+          height: 60px;
+          font-size: 1.5rem;
+        }
+
+        .chapter-pagination {
+          gap: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><i class="fas fa-headphones-alt"></i> 西游记/西游释厄传</h1>
+        <p>
+          《西游记》又名《西游释厄传》是中国古代第一部浪漫主义章回体长篇神魔小说。现存明刊百回本《西游记》均无作者署名。清代学者吴玉搢等首先提出《西游记》作者是明代吴承恩。
+        </p>
+      </header>
+
+      <div class="app-container">
+        <div class="book-list">
+          <h2 class="section-title"><i class="fas fa-book"></i> 书架</h2>
+          <div id="bookList">
+            <!-- 书籍列表将通过JavaScript动态生成 -->
+          </div>
+        </div>
+
+        <div class="player-section">
+          <h2 class="section-title">
+            <i class="fas fa-play-circle"></i> 播放器
+          </h2>
+          <div class="resume-info" id="resumeInfo">
+            <h3><i class="fas fa-history"></i> 继续上次播放</h3>
+            <p>
+              您上次听到了 <span id="lastChapterTitle">无记录</span>
+              <span id="lastTime"></span>，点击继续播放
+            </p>
+            <button
+              class="control-btn"
+              id="resumeBtn"
+              style="margin-top: 10px; width: auto; padding: 0 20px"
+            >
+              <i class="fas fa-play"></i> 继续播放
+            </button>
+          </div>
+
+          <div class="player-container">
+            <div class="book-cover">
+              <img
+                id="bookCover"
+                src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                alt="小说封面"
+              />
+            </div>
+
+            <div class="current-chapter-info">
+              <div class="current-book-title" id="currentBookTitle">
+                选择书籍开始听书
+              </div>
+              <div class="current-chapter-title" id="currentChapterTitle">
+                选择章节开始播放
+              </div>
+            </div>
+
+            <div class="audio-player">
+              <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-indicator" id="progressIndicator"></div>
+              </div>
+
+              <div class="time-info">
+                <span id="currentTime">00:00</span>
+                <span id="duration">00:00</span>
+              </div>
+
+              <div class="player-controls">
+                <button class="control-btn" id="prevBtn" title="上一章">
+                  <i class="fas fa-step-backward"></i>
+                </button>
+
+                <button
+                  class="control-btn play-pause"
+                  id="playPauseBtn"
+                  title="播放/暂停"
+                >
+                  <i class="fas fa-play" id="playIcon"></i>
+                </button>
+
+                <button class="control-btn" id="nextBtn" title="下一章">
+                  <i class="fas fa-step-forward"></i>
+                </button>
+              </div>
+
+              <div class="volume-control">
+                <i class="fas fa-volume-up"></i>
+                <div class="volume-slider" id="volumeSlider">
+                  <div class="volume-level" id="volumeLevel"></div>
+                </div>
+              </div>
+
+              <div class="playback-rate">
+                <span>播放速度:</span>
+                <select id="playbackRate">
+                  <option value="0.5">0.5x</option>
+                  <option value="0.75">0.75x</option>
+                  <option value="1" selected>正常</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2">2x</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>
+          © 2025 小说听书 | 纯前端实现 | 章节分页显示 | 支持连续播放与断点续听
+        </p>
+        <p style="margin-top: 5px; font-size: 0.8rem">
+          提示：长篇小说已按50章/页分页显示，方便在移动端浏览和选择章节
+        </p>
+      </footer>
+    </div>
+
+    <!-- 音频播放器 新加网页须要修改-->
+    <audio id="audioPlayer_page12" preload="metadata"></audio>
+
+    <script>
+      // 音频数据
+      const audioLibrary = [
+        {
+          id: 0,
+          title: "西游记",
+          author: "吴承恩", // 原著作者
+          narrator: "录制 : 抖音优戏深度", // 播音员/录制者
+          cover: "imgs/xyjwce.jpg",
+          chapters: [
+            // {
+            //   id: 0,
+            //   title: "片头",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/0.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            {
+              id: 1,
+              title: "第1章 介绍",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/1.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 2,
+              title: "第2章 石猴出世 寻仙问道 ",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/2.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 3,
+              title: "第3章 学72变 斩妖魔王",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/3.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 4,
+              title: "第4章 大闹东海 地府除名",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/4.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 5,
+              title: "第5章 齐天大圣弼马温",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/5.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 6,
+              title: "第6章 偷桃盗丹 大闹天宫",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/6.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 7,
+              title: "第7章 大战二郎显圣真君",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/7.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 8,
+              title: "第8章 八卦炉中炼大圣 五指山下压悟空",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/8.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 9,
+              title: "第9章 观音找取经人",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/9.mp3?page=page12&t=" + Date.now(),
+            },
+            {
+              id: 10,
+              title: "第10章 泾河龙王案",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/10.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 11,
+              title: "第11章 太宗游地府 观音化金蝉",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/11.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 12,
+              title: "第12章 三藏西行遇行者 心猿归正",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/12.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 13,
+              title: "第13章 偶遇白龙 观音赐三救毫毛",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/13.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 14,
+              title: "第14章 观音禅院 黑风山怪窃袈裟",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/14.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 15,
+              title: "第15章 观世音收伏黑熊怪",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/15.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 16,
+              title: "第16章 难高老庄大圣除妖魔",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/16.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 17,
+              title: "第17章 悟空收八戒 玄奘受心经",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/17.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 18,
+              title: "第18章 黄风岭八戒争先 灵吉定风魔",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/18.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 19,
+              title: "第19章 八戒大战流沙河 收悟净",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/19.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 20,
+              title: "第20章 三藏不忘本 四圣试禅心",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/20.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 21,
+              title: "第21章 万寿山留故友 五庄观窃人参",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/21.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 22,
+              title: "第22章 行者大闹五庄观 观世音甘泉活树",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/22.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 23,
+              title: "第23章 尸魔三戏玄奘 圣僧恨逐美猴王",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/23.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 24,
+              title: "第24章 黑松林三藏逢魔 承恩八戒转山林",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/24.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 25,
+              title: "第25章 邪魔侵正法 意马忆心猿",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/25.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 26,
+              title: "第26章 八戒义激猴王 行者智降妖怪",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/26.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 27,
+              title: "第27章 平顶山功曹传信 莲花洞木母逢灾",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/27.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 28,
+              title: "第28章 魔王巧算困心猿 大圣腾那骗宝贝",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/28.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 29,
+              title: "第29章 外道施威欺正性 心猿获宝伏邪魔",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/29.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            {
+              id: 30,
+              title: "第30章 心猿正处诸缘伏 劈破旁门见月明",
+              duration: "💿",
+              url:
+                "https://xyj.xkyfzs.top/1-50/30.mp3?page=page12&t=" +
+                Date.now(),
+            },
+            // {
+            //   id: 31,
+            //   title: "第31章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/31.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 32,
+            //   title: "第32章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/32.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 33,
+            //   title: "第33章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/33.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 34,
+            //   title: "第34章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/34.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 35,
+            //   title: "第35章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/35.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 36,
+            //   title: "第36章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/36.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 37,
+            //   title: "第37章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/37.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 38,
+            //   title: "第38章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/38.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 39,
+            //   title: "第39章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/39.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 40,
+            //   title: "第40章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/40.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 41,
+            //   title: "第41章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/41.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 42,
+            //   title: "第42章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/42.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 43,
+            //   title: "第43章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/43.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 44,
+            //   title: "第44章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/44.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 45,
+            //   title: "第45章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/45.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 46,
+            //   title: "第46章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/46.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 47,
+            //   title: "第47章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/47.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 48,
+            //   title: "第48章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/48.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 49,
+            //   title: "第49章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/49.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 50,
+            //   title: "第50章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/1-50/50.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 51,
+            //   title: "第51章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/51.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 52,
+            //   title: "第52章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/52.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 53,
+            //   title: "第53章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/53.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 54,
+            //   title: "第54章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/54.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 55,
+            //   title: "第55章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/55.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 56,
+            //   title: "第56章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/56.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 57,
+            //   title: "第57章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/57.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 58,
+            //   title: "第58章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/58.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 59,
+            //   title: "第59章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/59.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 60,
+            //   title: "第60章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/60.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 61,
+            //   title: "第61章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/61.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 62,
+            //   title: "第62章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/62.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 63,
+            //   title: "第63章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/63.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 64,
+            //   title: "第64章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/64.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 65,
+            //   title: "第65章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/65.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 66,
+            //   title: "第66章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/66.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 67,
+            //   title: "第67章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/67.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 68,
+            //   title: "第68章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/68.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 69,
+            //   title: "第69章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/69.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 70,
+            //   title: "第70章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/70.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 71,
+            //   title: "第71章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/71.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 72,
+            //   title: "第72章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/72.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 73,
+            //   title: "第73章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/73.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 74,
+            //   title: "第74章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/74.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 75,
+            //   title: "第75章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/75.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 76,
+            //   title: "第76章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/76.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 77,
+            //   title: "第77章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/77.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 78,
+            //   title: "第78章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/78.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 79,
+            //   title: "第79章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/79.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 80,
+            //   title: "第80章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/80.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 81,
+            //   title: "第81章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/81.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 82,
+            //   title: "第82章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/82.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 83,
+            //   title: "第83章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/83.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 84,
+            //   title: "第84章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/84.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 85,
+            //   title: "第85章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/85.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 86,
+            //   title: "第86章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/86.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 87,
+            //   title: "第87章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/87.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 88,
+            //   title: "第88章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/88.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 89,
+            //   title: "第89章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/89.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 90,
+            //   title: "第90章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/90.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 91,
+            //   title: "第91章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/91.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 92,
+            //   title: "第92章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/92.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 93,
+            //   title: "第93章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/93.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 94,
+            //   title: "第94章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/94.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 95,
+            //   title: "第95章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/95.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 96,
+            //   title: "第96章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/96.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 97,
+            //   title: "第97章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/97.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 98,
+            //   title: "第98章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/98.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 99,
+            //   title: "第99章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/99.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 100,
+            //   title: "第100章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/51-100/100.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 101,
+            //   title: "第101章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/101.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 102,
+            //   title: "第102章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/102.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 103,
+            //   title: "第103章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/103.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 104,
+            //   title: "第104章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/104.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 105,
+            //   title: "第105章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/105.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 106,
+            //   title: "第106章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/106.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 107,
+            //   title: "第107章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/107.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 108,
+            //   title: "第108章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/108.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 109,
+            //   title: "第109章",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/109.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+            // {
+            //   id: 110,
+            //   title: "第110章 完结",
+            //   duration: "💿",
+            //   url:
+            //     "https://xyj.xkyfzs.top/101-110/110.mp3?page=page12&t=" +
+            //     Date.now(),
+            // },
+          ],
+        },
+      ];
+
+      // 生成模拟章节数据
+      function generateChapters(bookTitle, count) {
+        const chapters = [];
+        const baseDuration = 15 * 60; // 15分钟基础时长
+
+        for (let i = 1; i <= count; i++) {
+          // 随机生成时长 (10-25分钟之间)
+          const durationSec =
+            baseDuration + Math.floor(Math.random() * 10 * 60);
+          const durationMin = Math.floor(durationSec / 60);
+          const durationSecRemainder = durationSec % 60;
+          const durationStr = `${durationMin}:${durationSecRemainder
+            .toString()
+            .padStart(2, "0")}`;
+
+          chapters.push({
+            id: i,
+            title: `第${i}章 ${bookTitle}章节${i}`,
+            duration: durationStr,
+            url: `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${
+              (i % 13) + 1
+            }.mp3`, // 循环使用13个示例音频
+          });
+        }
+
+        return chapters;
+      }
+
+      // DOM元素
+      const PAGE_ID = "novel_page_12";
+      const audioPlayer = document.getElementById("audioPlayer_page12");
+      const bookList = document.getElementById("bookList");
+      const bookCover = document.getElementById("bookCover");
+      const currentBookTitle = document.getElementById("currentBookTitle");
+      const currentChapterTitle = document.getElementById(
+        "currentChapterTitle",
+      );
+      const playPauseBtn = document.getElementById("playPauseBtn");
+      const playIcon = document.getElementById("playIcon");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const progressBar = document.getElementById("progressBar");
+      const progressContainer = document.getElementById("progressContainer");
+      const progressIndicator = document.getElementById("progressIndicator");
+      const currentTime = document.getElementById("currentTime");
+      const duration = document.getElementById("duration");
+      const volumeSlider = document.getElementById("volumeSlider");
+      const volumeLevel = document.getElementById("volumeLevel");
+      const playbackRate = document.getElementById("playbackRate");
+      const resumeInfo = document.getElementById("resumeInfo");
+      const lastChapterTitle = document.getElementById("lastChapterTitle");
+      const lastTime = document.getElementById("lastTime");
+      const resumeBtn = document.getElementById("resumeBtn");
+
+      // 状态变量
+      let currentBook = null;
+      let currentChapterIndex = 0;
+      let isPlaying = false;
+      let playbackHistory =
+        JSON.parse(localStorage.getItem("playbackHistory_" + PAGE_ID)) || {};
+      let currentChapterPage = 0; // 当前章节页码
+      const CHAPTERS_PER_PAGE = 50; // 每页显示的章节数
+
+      // 初始化
+      function init() {
+        // 先停止并重置音频播放器
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        audioPlayer.src = "";
+        // 然后再执行其他初始化
+        renderBookList();
+        loadLastPlayback();
+        setupEventListeners();
+        console.log("页面初始化完成，页面ID:", PAGE_ID);
+      }
+
+      // 渲染书籍列表
+      function renderBookList() {
+        bookList.innerHTML = "";
+
+        audioLibrary.forEach((book) => {
+          const bookItem = document.createElement("div");
+          bookItem.className = "book-item";
+          bookItem.dataset.bookId = book.id;
+
+          // 检查是否有播放记录
+          const hasHistory =
+            playbackHistory[book.id] && playbackHistory[book.id].lastChapter;
+          const historyIndicator = hasHistory
+            ? '<span style="color:#4cc9f0; font-size:0.8rem; float:right;"><i class="fas fa-history"></i> 有进度</span>'
+            : "";
+
+          bookItem.innerHTML = `
+            <div class="book-title">${book.title} ${historyIndicator}</div>
+            <div class="book-author">
+                <div>作者: ${book.originalAuthor || book.author || "未知"}</div>
+                ${
+                  book.narrator
+                    ? `<div style="margin-top:3px; font-size:0.9em;">${book.narrator}</div>`
+                    : ""
+                }
+            </div>
+            <div class="book-meta">
+                <span>共 ${book.chapters.length} 章</span>
+                <span>约 ${Math.round(
+                  (book.chapters.length * 15) / 60,
+                )} 小时</span>
+            </div>
+            <div class="chapter-list-container" id="chapters-${
+              book.id
+            }" style="display:none;">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="搜索章节..." data-book-id="${
+                      book.id
+                    }">
+                </div>
+                <div class="chapter-pagination" id="pagination-${book.id}">
+                    <!-- 分页按钮将通过JavaScript动态生成 -->
+                </div>
+                <div class="chapter-list" id="chapter-list-${book.id}">
+                    <!-- 章节列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            `;
+
+          bookList.appendChild(bookItem);
+
+          // 添加书籍点击事件
+          bookItem.addEventListener("click", (e) => {
+            if (
+              !e.target.classList.contains("chapter-item") &&
+              !e.target.classList.contains("page-btn") &&
+              !e.target.classList.contains("search-input")
+            ) {
+              // 切换章节列表显示
+              const chapterContainer = document.getElementById(
+                `chapters-${book.id}`,
+              );
+              const isVisible = chapterContainer.style.display === "block";
+
+              // 隐藏所有章节列表
+              document
+                .querySelectorAll(".chapter-list-container")
+                .forEach((list) => {
+                  list.style.display = "none";
+                });
+
+              // 移除所有活动状态
+              document.querySelectorAll(".book-item").forEach((item) => {
+                item.classList.remove("active");
+              });
+
+              // 显示当前章节列表
+              if (!isVisible) {
+                chapterContainer.style.display = "block";
+                bookItem.classList.add("active");
+                loadBook(book);
+
+                // 渲染分页按钮和第一页章节
+                renderChapterPagination(book);
+                renderChapterList(book, 0);
+              }
+            }
+          });
+
+          // 添加搜索框事件监听
+          const searchInput = bookItem.querySelector(".search-input");
+          searchInput.addEventListener("input", (e) => {
+            const searchTerm = e.target.value.trim();
+            if (searchTerm) {
+              searchChapters(book, searchTerm);
+            } else {
+              // 如果搜索框为空，恢复显示分页
+              renderChapterPagination(book);
+              renderChapterList(book, currentChapterPage);
+            }
+          });
+        });
+      }
+
+      // 渲染章节分页按钮
+      function renderChapterPagination(book) {
+        const paginationContainer = document.getElementById(
+          `pagination-${book.id}`,
+        );
+        const totalChapters = book.chapters.length;
+        const totalPages = Math.ceil(totalChapters / CHAPTERS_PER_PAGE);
+
+        paginationContainer.innerHTML = "";
+
+        // 生成分页按钮
+        for (let i = 0; i < totalPages; i++) {
+          const startChapter = i * CHAPTERS_PER_PAGE + 1;
+          const endChapter = Math.min(
+            (i + 1) * CHAPTERS_PER_PAGE,
+            totalChapters,
+          );
+
+          const pageBtn = document.createElement("button");
+          pageBtn.className = "page-btn";
+          pageBtn.textContent = `${startChapter}-${endChapter}`;
+          pageBtn.dataset.page = i;
+
+          if (i === currentChapterPage) {
+            pageBtn.classList.add("active");
+          }
+
+          pageBtn.addEventListener("click", () => {
+            currentChapterPage = i;
+            renderChapterList(book, i);
+
+            // 更新分页按钮活动状态
+            document
+              .querySelectorAll(`#pagination-${book.id} .page-btn`)
+              .forEach((btn) => {
+                btn.classList.remove("active");
+              });
+            pageBtn.classList.add("active");
+          });
+
+          paginationContainer.appendChild(pageBtn);
+        }
+
+        // 添加上一页/下一页按钮
+        if (totalPages > 5) {
+          const prevPageBtn = document.createElement("button");
+          prevPageBtn.className = "page-btn";
+          prevPageBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+          prevPageBtn.title = "上一页";
+          prevPageBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (currentChapterPage > 0) {
+              currentChapterPage--;
+              renderChapterList(book, currentChapterPage);
+              updatePaginationButtons(book, currentChapterPage);
+            }
+          });
+
+          const nextPageBtn = document.createElement("button");
+          nextPageBtn.className = "page-btn";
+          nextPageBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+          nextPageBtn.title = "下一页";
+          nextPageBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const totalPages = Math.ceil(
+              book.chapters.length / CHAPTERS_PER_PAGE,
+            );
+            if (currentChapterPage < totalPages - 1) {
+              currentChapterPage++;
+              renderChapterList(book, currentChapterPage);
+              updatePaginationButtons(book, currentChapterPage);
+            }
+          });
+
+          paginationContainer.insertBefore(
+            prevPageBtn,
+            paginationContainer.firstChild,
+          );
+          paginationContainer.appendChild(nextPageBtn);
+        }
+      }
+
+      // 更新分页按钮活动状态
+      function updatePaginationButtons(book, activePage) {
+        const pageBtns = document.querySelectorAll(
+          `#pagination-${book.id} .page-btn`,
+        );
+        pageBtns.forEach((btn, index) => {
+          // 跳过上一页/下一页按钮
+          if (btn.innerHTML.includes("fa-chevron")) return;
+
+          const pageNum = parseInt(btn.dataset.page);
+          if (pageNum === activePage) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      }
+
+      // 渲染章节列表
+      function renderChapterList(book, page) {
+        const chapterListContainer = document.getElementById(
+          `chapter-list-${book.id}`,
+        );
+        const startIndex = page * CHAPTERS_PER_PAGE;
+        const endIndex = Math.min(
+          startIndex + CHAPTERS_PER_PAGE,
+          book.chapters.length,
+        );
+
+        chapterListContainer.innerHTML = "";
+
+        for (let i = startIndex; i < endIndex; i++) {
+          const chapter = book.chapters[i];
+          const isPlayed =
+            playbackHistory[book.id] &&
+            playbackHistory[book.id].playedChapters &&
+            playbackHistory[book.id].playedChapters.includes(chapter.id);
+          const playedClass = isPlayed ? "played" : "";
+
+          const chapterItem = document.createElement("div");
+          chapterItem.className = `chapter-item ${playedClass}`;
+          chapterItem.dataset.chapterIndex = i;
+          chapterItem.innerHTML = `
+                    <span>${chapter.title}</span>
+                    <span>${chapter.duration}</span>
+                `;
+
+          // 如果有播放记录且是上次播放的章节，添加活动状态
+          if (
+            playbackHistory[book.id] &&
+            playbackHistory[book.id].lastChapter === i
+          ) {
+            chapterItem.classList.add("active");
+          }
+
+          chapterItem.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            // 移除所有章节的活动状态
+            document
+              .querySelectorAll(`#chapter-list-${book.id} .chapter-item`)
+              .forEach((item) => {
+                item.classList.remove("active");
+              });
+
+            // 设置当前章节为活动状态
+            chapterItem.classList.add("active");
+
+            // 加载并播放章节
+            loadChapter(book, i);
+            playAudio();
+          });
+
+          chapterListContainer.appendChild(chapterItem);
+        }
+      }
+
+      // 搜索章节
+      function searchChapters(book, searchTerm) {
+        const chapterListContainer = document.getElementById(
+          `chapter-list-${book.id}`,
+        );
+        const paginationContainer = document.getElementById(
+          `pagination-${book.id}`,
+        );
+
+        // 隐藏分页按钮
+        paginationContainer.style.display = "none";
+
+        // 清空章节列表
+        chapterListContainer.innerHTML = "";
+
+        // 过滤章节
+        const filteredChapters = book.chapters.filter((chapter) =>
+          chapter.title.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+
+        if (filteredChapters.length === 0) {
+          chapterListContainer.innerHTML = `<div style="text-align:center; padding:20px; color:#8a9ba8;">未找到包含"${searchTerm}"的章节</div>`;
+          return;
+        }
+
+        // 显示搜索结果
+        filteredChapters.forEach((chapter, index) => {
+          const originalIndex = book.chapters.findIndex(
+            (c) => c.id === chapter.id,
+          );
+          const isPlayed =
+            playbackHistory[book.id] &&
+            playbackHistory[book.id].playedChapters &&
+            playbackHistory[book.id].playedChapters.includes(chapter.id);
+          const playedClass = isPlayed ? "played" : "";
+
+          const chapterItem = document.createElement("div");
+          chapterItem.className = `chapter-item ${playedClass}`;
+          chapterItem.dataset.chapterIndex = originalIndex;
+          chapterItem.innerHTML = `
+                    <span>${chapter.title}</span>
+                    <span>${chapter.duration}</span>
+                `;
+
+          // 如果有播放记录且是上次播放的章节，添加活动状态
+          if (
+            playbackHistory[book.id] &&
+            playbackHistory[book.id].lastChapter === originalIndex
+          ) {
+            chapterItem.classList.add("active");
+          }
+
+          chapterItem.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            // 移除所有章节的活动状态
+            document
+              .querySelectorAll(`#chapter-list-${book.id} .chapter-item`)
+              .forEach((item) => {
+                item.classList.remove("active");
+              });
+
+            // 设置当前章节为活动状态
+            chapterItem.classList.add("active");
+
+            // 加载并播放章节
+            loadChapter(book, originalIndex);
+            playAudio();
+
+            // 恢复分页显示
+            paginationContainer.style.display = "flex";
+          });
+
+          chapterListContainer.appendChild(chapterItem);
+        });
+      }
+
+      // 加载书籍
+      function loadBook(book) {
+        currentBook = book;
+        currentChapterIndex = 0;
+
+        // 更新UI
+        bookCover.src = book.cover;
+        currentBookTitle.textContent = book.title;
+        currentChapterTitle.textContent = "请选择章节开始播放";
+
+        // 如果有上次播放记录，显示恢复信息
+        if (playbackHistory[book.id]) {
+          const lastChapterIndex = playbackHistory[book.id].lastChapter;
+          if (
+            lastChapterIndex !== undefined &&
+            lastChapterIndex < book.chapters.length
+          ) {
+            const chapter = book.chapters[lastChapterIndex];
+            const lastTime = formatTime(playbackHistory[book.id].lastTime || 0);
+
+            lastChapterTitle.textContent = chapter.title;
+            lastTime.textContent = lastTime;
+            resumeInfo.style.display = "block";
+
+            // 计算并跳转到包含该章节的页码
+            currentChapterPage = Math.floor(
+              lastChapterIndex / CHAPTERS_PER_PAGE,
+            );
+          } else {
+            resumeInfo.style.display = "none";
+          }
+        } else {
+          resumeInfo.style.display = "none";
+        }
+      }
+
+      // 加载章节
+      function loadChapter(book, chapterIndex) {
+        currentBook = book;
+        currentChapterIndex = chapterIndex;
+        const chapter = book.chapters[chapterIndex];
+
+        // 更新UI
+        currentChapterTitle.textContent = chapter.title;
+        const uniqueUrl =
+          chapter.url +
+          (chapter.url.includes("?") ? "&" : "?") +
+          "unique=" +
+          Date.now() +
+          "&page=" +
+          PAGE_ID;
+
+        audioPlayer.src = uniqueUrl;
+
+        // 设置音频源
+        audioPlayer.src = chapter.url;
+
+        // 加载音频元数据
+        audioPlayer.addEventListener(
+          "loadedmetadata",
+          () => {
+            duration.textContent = formatTime(audioPlayer.duration);
+
+            // 如果有上次播放记录，恢复播放位置
+            if (
+              playbackHistory[book.id] &&
+              playbackHistory[book.id].lastChapter === chapterIndex
+            ) {
+              const lastTime = playbackHistory[book.id].lastTime || 0;
+              audioPlayer.currentTime = lastTime;
+              updateProgressBar();
+            }
+          },
+          { once: true },
+        );
+
+        // 标记章节为已播放
+        markChapterAsPlayed(book.id, chapter.id);
+
+        // 更新当前页码
+        currentChapterPage = Math.floor(chapterIndex / CHAPTERS_PER_PAGE);
+
+        // 如果章节列表已显示，更新活动状态
+        const chapterListContainer = document.getElementById(
+          `chapters-${book.id}`,
+        );
+        if (chapterListContainer.style.display === "block") {
+          renderChapterPagination(book);
+          renderChapterList(book, currentChapterPage);
+        }
+      }
+
+      // 播放音频
+      function playAudio() {
+        if (!audioPlayer.src) return;
+
+        isPlaying = true;
+        audioPlayer.play();
+        playIcon.className = "fas fa-pause";
+        playPauseBtn.title = "暂停";
+      }
+
+      // 暂停音频
+      function pauseAudio() {
+        isPlaying = false;
+        audioPlayer.pause();
+        playIcon.className = "fas fa-play";
+        playPauseBtn.title = "播放";
+      }
+
+      // 切换播放/暂停
+      function togglePlayPause() {
+        if (!audioPlayer.src) {
+          // 如果没有音频加载，加载第一本书的第一个章节
+          if (audioLibrary.length > 0) {
+            const firstBook = audioLibrary[0];
+            loadBook(firstBook);
+
+            // 如果有播放记录，加载记录章节，否则加载第一个章节
+            if (playbackHistory[firstBook.id]) {
+              const lastChapterIndex =
+                playbackHistory[firstBook.id].lastChapter || 0;
+              loadChapter(firstBook, lastChapterIndex);
+            } else {
+              loadChapter(firstBook, 0);
+            }
+
+            // 显示章节列表
+            document.getElementById(`chapters-${firstBook.id}`).style.display =
+              "block";
+            document
+              .querySelector(`[data-book-id="${firstBook.id}"]`)
+              .classList.add("active");
+
+            // 渲染分页和章节列表
+            renderChapterPagination(firstBook);
+            renderChapterList(firstBook, currentChapterPage);
+          }
+          return;
+        }
+
+        if (isPlaying) {
+          pauseAudio();
+        } else {
+          playAudio();
+        }
+      }
+
+      // 上一章
+      function prevChapter() {
+        if (!currentBook) return;
+
+        if (currentChapterIndex > 0) {
+          currentChapterIndex--;
+          loadChapter(currentBook, currentChapterIndex);
+          playAudio();
+        }
+      }
+
+      // 下一章
+      function nextChapter() {
+        if (!currentBook) return;
+
+        if (currentChapterIndex < currentBook.chapters.length - 1) {
+          currentChapterIndex++;
+          loadChapter(currentBook, currentChapterIndex);
+          playAudio();
+        } else {
+          // 如果是最后一章，暂停播放
+          pauseAudio();
+        }
+      }
+
+      // 更新进度条
+      function updateProgressBar() {
+        if (!audioPlayer.duration) return;
+
+        const progressPercent =
+          (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+        progressIndicator.style.left = `${progressPercent}%`;
+        currentTime.textContent = formatTime(audioPlayer.currentTime);
+
+        // 保存播放进度
+        if (currentBook) {
+          savePlaybackProgress(
+            currentBook.id,
+            currentChapterIndex,
+            audioPlayer.currentTime,
+          );
+        }
+      }
+
+      // 设置播放进度
+      function setProgress(e) {
+        if (!audioPlayer.duration) return;
+
+        const width = progressContainer.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audioPlayer.duration;
+
+        audioPlayer.currentTime = (clickX / width) * duration;
+        updateProgressBar();
+      }
+
+      // 设置音量
+      function setVolume(e) {
+        const width = volumeSlider.clientWidth;
+        const clickX = e.offsetX;
+        const volumeLevelValue = Math.min(1, Math.max(0, clickX / width));
+
+        audioPlayer.volume = volumeLevelValue;
+        volumeLevel.style.width = `${volumeLevelValue * 100}%`;
+      }
+
+      // 保存播放进度
+      function savePlaybackProgress(bookId, chapterIndex, time) {
+        if (!playbackHistory[bookId]) {
+          playbackHistory[bookId] = {
+            playedChapters: [],
+            lastChapter: chapterIndex,
+            lastTime: time,
+          };
+        }
+
+        playbackHistory[bookId].lastChapter = chapterIndex;
+        playbackHistory[bookId].lastTime = time;
+
+        localStorage.setItem(
+          "playbackHistory_" + PAGE_ID,
+          JSON.stringify(playbackHistory),
+        );
+      }
+
+      // 标记章节为已播放
+      function markChapterAsPlayed(bookId, chapterId) {
+        if (!playbackHistory[bookId]) {
+          playbackHistory[bookId] = {
+            playedChapters: [],
+            lastChapter: 0,
+            lastTime: 0,
+          };
+        }
+
+        if (!playbackHistory[bookId].playedChapters.includes(chapterId)) {
+          playbackHistory[bookId].playedChapters.push(chapterId);
+          localStorage.setItem(
+            "playbackHistory_" + PAGE_ID,
+            JSON.stringify(playbackHistory),
+          );
+        }
+      }
+
+      // 加载上次播放记录
+      function loadLastPlayback() {
+        if (Object.keys(playbackHistory).length > 0) {
+          // 查找最近播放的书籍
+          let lastBookId = null;
+          let lastTime = 0;
+
+          for (const bookId in playbackHistory) {
+            if (playbackHistory[bookId].lastTime > lastTime) {
+              lastTime = playbackHistory[bookId].lastTime;
+              lastBookId = bookId;
+            }
+          }
+
+          console.log("加载上次播放记录，最近书籍ID:", lastBookId);
+
+          // 如果有播放记录，显示恢复信息
+          if (lastBookId) {
+            const book = audioLibrary.find((b) => b.id == lastBookId);
+            if (book) {
+              const lastChapterIndex = playbackHistory[lastBookId].lastChapter;
+              if (
+                lastChapterIndex !== undefined &&
+                lastChapterIndex < book.chapters.length
+              ) {
+                const chapter = book.chapters[lastChapterIndex];
+
+                console.log(
+                  "显示恢复信息:",
+                  chapter.title,
+                  playbackHistory[lastBookId].lastTime,
+                );
+                lastChapterTitle.textContent = chapter.title;
+                lastTime.textContent = formatTime(
+                  playbackHistory[lastBookId].lastTime || 0,
+                );
+                resumeInfo.style.display = "block";
+              } else {
+                console.warn("章节索引无效:", lastChapterIndex);
+                resumeInfo.style.display = "none";
+              }
+            } else {
+              console.warn("未找到书籍:", lastBookId);
+              resumeInfo.style.display = "none";
+            }
+          } else {
+            console.log("没有播放记录");
+            resumeInfo.style.display = "none";
+          }
+        }
+      }
+
+      // 恢复上次播放
+      function resumeLastPlayback() {
+        console.log("点击继续播放按钮");
+
+        // 查找最近播放的书籍
+        let lastBookId = null;
+        let lastTime = 0;
+
+        for (const bookId in playbackHistory) {
+          if (playbackHistory[bookId].lastTime > lastTime) {
+            lastTime = playbackHistory[bookId].lastTime;
+            lastBookId = bookId;
+          }
+        }
+
+        console.log("找到最近播放的书籍ID:", lastBookId, "时间:", lastTime);
+
+        if (lastBookId) {
+          // 查找对应的书籍
+          const book = audioLibrary.find((b) => b.id == lastBookId);
+
+          if (book) {
+            console.log("找到书籍:", book.title);
+            loadBook(book);
+
+            const lastChapterIndex =
+              playbackHistory[lastBookId].lastChapter || 0;
+            console.log(
+              "上次播放章节索引:",
+              lastChapterIndex,
+              "总章节数:",
+              book.chapters.length,
+            );
+
+            if (lastChapterIndex < book.chapters.length) {
+              console.log("加载章节:", book.chapters[lastChapterIndex].title);
+              loadChapter(book, lastChapterIndex);
+              playAudio();
+
+              // 显示章节列表
+              const chapterContainer = document.getElementById(
+                `chapters-${book.id}`,
+              );
+              if (chapterContainer) {
+                chapterContainer.style.display = "block";
+                const bookElement = document.querySelector(
+                  `[data-book-id="${book.id}"]`,
+                );
+                if (bookElement) {
+                  bookElement.classList.add("active");
+                }
+
+                // 计算并跳转到包含该章节的页码
+                currentChapterPage = Math.floor(
+                  lastChapterIndex / CHAPTERS_PER_PAGE,
+                );
+                console.log("跳转到页码:", currentChapterPage);
+
+                // 渲染分页和章节列表
+                renderChapterPagination(book);
+                renderChapterList(book, currentChapterPage);
+              } else {
+                console.warn("章节容器未找到:", `chapters-${book.id}`);
+              }
+            } else {
+              console.warn("章节索引超出范围");
+              alert("播放记录中的章节索引无效，将从头开始播放");
+              if (book.chapters.length > 0) {
+                loadChapter(book, 0);
+                playAudio();
+              }
+            }
+          } else {
+            console.warn("未找到对应的书籍");
+            alert("未找到对应的书籍，可能已被删除");
+          }
+        } else {
+          console.log("没有播放记录");
+          alert("没有找到播放记录，请先选择一个章节开始播放");
+        }
+      }
+
+      // 格式化时间 (秒 -> MM:SS)
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins.toString().padStart(2, "0")}:${secs
+          .toString()
+          .padStart(2, "0")}`;
+      }
+
+      // 设置事件监听器
+      function setupEventListeners() {
+        // 播放/暂停按钮
+        playPauseBtn.addEventListener("click", togglePlayPause);
+
+        // 上一章/下一章按钮
+        prevBtn.addEventListener("click", prevChapter);
+        nextBtn.addEventListener("click", nextChapter);
+
+        // 进度条点击
+        progressContainer.addEventListener("click", setProgress);
+        progressContainer.addEventListener("mousemove", () => {
+          progressIndicator.style.display = "block";
+        });
+        progressContainer.addEventListener("mouseleave", () => {
+          progressIndicator.style.display = "none";
+        });
+
+        // 音量控制
+        volumeSlider.addEventListener("click", setVolume);
+
+        // 播放速度控制
+        playbackRate.addEventListener("change", () => {
+          audioPlayer.playbackRate = parseFloat(playbackRate.value);
+        });
+
+        // 恢复播放按钮
+        resumeBtn.addEventListener("click", resumeLastPlayback);
+
+        // 音频事件
+        audioPlayer.addEventListener("timeupdate", updateProgressBar);
+
+        audioPlayer.addEventListener("ended", () => {
+          // 自动播放下一章
+          if (
+            currentBook &&
+            currentChapterIndex < currentBook.chapters.length - 1
+          ) {
+            setTimeout(() => {
+              nextChapter();
+            }, 1000);
+          } else {
+            // 最后一章播放完毕
+            pauseAudio();
+          }
+        });
+
+        audioPlayer.addEventListener("loadedmetadata", () => {
+          duration.textContent = formatTime(audioPlayer.duration);
+        });
+
+        // 初始化音量
+        audioPlayer.volume = 1.0;
+        volumeLevel.style.width = "100%";
+      }
+
+      // 页面加载完成后初始化应用
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>
